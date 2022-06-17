@@ -1,0 +1,131 @@
+<?xml version="1.0" ?><cherrytree><node custom_icon_id="0" foreground="" is_bold="True" name="Linux Privilege Escalation" prog_lang="custom-colors" readonly="False" tags="" ts_creation="1655478832.03" ts_lastsave="1655478843.2" unique_id="3"><rich_text weight="heavy">Enumeration</rich_text><rich_text>:
+
+MAKE SURE TO MANUALLY TEST EVERYTHING. IF IT SAYS YOU CANNOT WRITE TO SOMETHING, STILL TRY. YOU MIGHT BE MISINTERPRETING SOME RESULTS.
+</rich_text><rich_text weight="heavy">
+</rich_text><rich_text link="webs https://github.com/C0nd4/OSCP-Priv-Esc" weight="heavy">GitHub - C0nd4/OSCP-Priv-Esc: Mind maps / flow charts to help with privilege escalation on the OSCP.</rich_text><rich_text weight="heavy">
+first thing- check all the folders that are in root and default. in fact jsut go thru the entire directory on each machine
+</rich_text><rich_text>
+PSSpy or process spy lets you check for process being which beats checking crontab. can read all input by everyone without need for root
+System Enumeration:- cat /proc/version
+                             - uname -a
+                             - lscpu
+                             - cat /etc/issue
+                             - ps aux
+                             - hostname
+                             
+User Enumeration:- whoami
+                         - id
+                         - sudo -l
+                         - cat /etc/passwd
+                         - cat /etc/shadow
+                         - cat /etc/group
+                         - history
+                        
+Network Enumeration:- ifconfig
+                               - ip a
+                               - route
+                               - arp -a
+                               - ip neigh
+                               - netstat -ano
+                               
+Password Hunting:- grep --color=auto -rnw ‘/’ -ie “PASSWORD=” --color=always 2&gt; /dev/null
+                         - locate password | more
+                         - find / -name id_rsa 2&gt; /dev/null \
+                         
+                         
+</rich_text><rich_text weight="heavy">Automatic tooling</rich_text><rich_text>- LinPeas, LinEnum, LinuxExploitSuggester, Linuxprivchecker, always run all of them once you are done with manual enumeration, running all confirms possible escalation paths. 
+
+
+</rich_text><rich_text weight="heavy">Kernel Exploits  
+
+</rich_text><rich_text link="webs https://github.com/lucyoa/kernel-exploits" weight="heavy">https://github.com/lucyoa/kernel-exploits</rich_text><rich_text weight="heavy">
+
+Dirty Cow Kernel Eploit- 
+            </rich_text><rich_text>Classic Exploit- just run the script as needed.
+            
+            Or run linux exploit suggester.
+                        Works for any linux version before 2018, search dirtycow ninja
+
+            
+</rich_text><rich_text weight="heavy">Passwords and File Permissions</rich_text><rich_text>
+
+Recover passwords using search methods, use a cheat sheet to find the search methods
+
+If can edit a service file, edit and use systctl to restart it
+
+
+</rich_text><rich_text weight="heavy">SUDO
+
+</rich_text><rich_text>Use GTFObins to figure this out
+
+
+</rich_text><rich_text weight="heavy">SUID
+
+</rich_text><rich_text>Allows user to execute a file as a root user
+
+cmd- find / -perm -u=s -type f 2&gt;/dev/null
+
+Shared object injection- use xtrace to track a suid file as it runs. This will tell you if it accesses any file on the system, if it does, and that file is missing, then that file can be overwritten with our own code and used for rce.
+
+Libraries are mostly in C, so this rce would certainly be in C too.
+
+nginxed-root.sh escalation ability- nginx log file can be replaced with a symlink to rce.
+
+Replace log file and restart the server.
+
+Enivronmental variables- if the path variable is set, and if a service is using it to execute a file stored in $PATH/ , then we can put a file with the same name in an earlier $PATH  variable so that that gets run over the actual service. You can also add a PATH to the env variable in order to run a file stored in /tmp/
+
+if the file acesses the full path use a  function method tecnique to overwrrite the function of the path
+
+</rich_text><rich_text weight="heavy">Capabilities
+
+</rich_text><rich_text>cmd</rich_text><rich_text weight="heavy">- </rich_text><rich_text>getcap -r / 2&gt;/dev/null
+
+winpeas can detect this
+
+
+</rich_text><rich_text weight="heavy">via Cron
+
+</rich_text><rich_text>cmd</rich_text><rich_text weight="heavy">- </rich_text><rich_text>cat /etc/crontab
+
+if something is running every few minutes, is a very likely candidate for exploitation.
+
+if a file is being run using cron, then the file can be edited to run our own malicious code
+
+wildcards- if a command is being run with the wildcard symbol (*), then we can write a file that is included in the wildcard criteria and can be used for CE.
+
+
+</rich_text><rich_text weight="heavy">NFS Root Squashing
+</rich_text><rich_text>
+Can be detected by WinPeas
+
+folders on remote machines can be mounted on the local machine and be edited as root
+
+
+</rich_text><rich_text weight="heavy">Docker</rich_text><rich_text>
+
+gtfobins command for docker
+
+
+
+
+
+
+
+
+
+
+
+
+</rich_text><rich_text weight="heavy">
+
+
+
+
+
+
+
+
+
+
+                   </rich_text></node></cherrytree>
